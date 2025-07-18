@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
-from helpers.file_handler import load_and_clean_excel
-from helpers.query_engine import ask_question
-from helpers.visualizer import generate_chart
+from file_handler import load_and_clean_excel
+from query_engine import ask_question
+from visualizer import generate_chart
 
 st.set_page_config(page_title="Conversational Excel Assistant", layout="wide")
-st.title("📊 Conversational Excel Assistant")
+st.title("Chatbot with excel")
 
 uploaded_file = st.file_uploader("Upload your Excel file (.xlsx)", type=["xlsx"])
 df = None
