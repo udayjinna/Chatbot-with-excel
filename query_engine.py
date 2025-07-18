@@ -1,7 +1,7 @@
-import openai
+from openai import OpenAI
 import os
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def ask_question(df, question):
     prompt = f"""
@@ -15,12 +15,12 @@ def ask_question(df, question):
     CHART_CODE: <pandas code to generate data for chart>
     """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    content = response["choices"][0]["message"]["content"]
+    content = response.choices[0].message.content
     lines = content.split("\n")
     answer = lines[0].replace("ANSWER: ", "")
     chart_type = lines[1].replace("CHART_TYPE: ", "")
