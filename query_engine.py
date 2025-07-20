@@ -1,29 +1,36 @@
-from openai import OpenAI
+import google.generativeai as genai
 import os
 
-# ✅ Create OpenAI client using the new v1+ syntax
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-pro")
 
 def ask_question(df, question):
     prompt = f"""
-    You are a data analyst. Convert the following question into pandas code to run on a DataFrame named df:
-    DataFrame info: {list(df.columns)}
-    Question: {question}
-    Return the result and also if a chart is needed, mention the chart type and code.
-    Format your response as:
-    ANSWER: <short text summary of result>
-    CHART_TYPE: <bar/hist/line/none>
-    CHART_CODE: <pandas code to generate data for chart>
+    You are a data analyst. Here are the columns in a DataFrame: {list(df.columns)}.
+    A user asked: "{question}"
+    Please provide:
+    1. A short summary answer.
+    2. If a chart is useful, suggest the chart type and provide pandas code to prepare chart_data.
+    Respond in this format:
+    ANSWER: ...
+    CHART_TYPE: ...
+    CHART_CODE: ...
     """
+    
+    response = model.generate_content(prompt)
+    content = response.text
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}]
-    )
+    # Extract answer parts
+    answer = ""
+    chart_type = "none"
+    chart_code = ""
+    
+    for line in content.splitlines():
+        if line.startswith("ANSWER:"):
+            answer = line.replace("ANSWER:", "").strip()
+        elif line.startswith("CHART_TYPE:"):
+            chart_type = line.replace("CHART_TYPE:", "").strip()
+        elif line.startswith("CHART_CODE:"):
+            chart_code = line.replace("CHART_CODE:", "").strip()
 
-    content = response.choices[0].message.content
-    lines = content.split("\n")
-    answer = lines[0].replace("ANSWER: ", "")
-    chart_type = lines[1].replace("CHART_TYPE: ", "")
-    chart_code = "\n".join(lines[2:]).replace("CHART_CODE: ", "")
     return answer, chart_type, chart_code
