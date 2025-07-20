@@ -4,4 +4,4 @@ openpyxl
 matplotlib
 seaborn
 plotly
-openai
+google-generativeai
