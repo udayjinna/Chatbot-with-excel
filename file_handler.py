@@ -7,7 +7,7 @@ def normalize_column_names(columns):
 def load_and_clean_excel(uploaded_file):
     try:
         # Try reading the first few rows without headers
-        preview_df = pd.read_excel(uploaded_file, header=None, engine="openpyxl")
+        preview_df = pd.read_excel(uploaded_file, header=1, engine="openpyxl")
         
         # Automatically detect header row by checking where most non-null values appear
         header_row_index = preview_df.notna().sum(axis=1).idxmax()
