@@ -2,14 +2,16 @@ import pandas as pd
 import re
 
 def normalize_column_names(columns):
-    # Replace special characters and extra spaces with underscores
-    return [re.sub(r'[^a-zA-Z0-9_]', '_', col.strip().lower()) for col in columns]
+    # Only normalize column names, not values
+    return [re.sub(r'[^a-zA-Z0-9_]', '_', str(col).strip().lower()) for col in columns]
 
-def load_excel(uploaded_file):
-    # Read the Excel file using openpyxl engine
-    df = pd.read_excel(uploaded_file, engine="openpyxl")
-    
-    # Normalize column names to avoid issues with special characters
+def load_and_clean_excel(uploaded_file):
+    try:
+        df = pd.read_excel(uploaded_file, engine="openpyxl", header=0)
+    except Exception:
+        df = pd.read_excel(uploaded_file, engine="openpyxl", header=None)
+        df.columns = df.iloc[0]
+        df = df[1:]
+
     df.columns = normalize_column_names(df.columns)
-    
     return df
