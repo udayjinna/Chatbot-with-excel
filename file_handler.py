@@ -1,16 +1,27 @@
+import pandas as pd
+import re
+
+def normalize_column_names(columns):
+    return [re.sub(r'[^a-zA-Z0-9_]', '_', str(col).strip().lower()) for col in columns]
+
 def load_and_clean_excel(uploaded_file):
     try:
-        # Try reading the first few rows to identify actual header
-        df_raw = pd.read_excel(uploaded_file, header=None)
-        st.write("Raw Preview:", df_raw.head(5))  # Debug step
+        # Try reading the first few rows without headers
+        preview_df = pd.read_excel(uploaded_file, header=None, engine="openpyxl")
+        
+        # Automatically detect header row by checking where most non-null values appear
+        header_row_index = preview_df.notna().sum(axis=1).idxmax()
 
-        # Manually set header row (e.g., row 1 or 2 depending on your file)
-        header_row_index = 1
-        df = pd.read_excel(uploaded_file, header=header_row_index)
-        df = df.dropna(how="all")  # Drop empty rows
-        df.columns = df.columns.str.strip()  # Clean column names
+        # Read again using that row as header
+        df = pd.read_excel(uploaded_file, header=header_row_index, engine="openpyxl")
+        
+        # Normalize the column names
+        df.columns = normalize_column_names(df.columns)
+
+        # Drop completely empty rows
+        df.dropna(how='all', inplace=True)
+
         return df
-
     except Exception as e:
-        st.error(f"Error loading Excel file: {e}")
-        return None
+        print("Error loading Excel file:", e)
+        return pd.DataFrame()  # Return empty DataFrame if error
