@@ -74,7 +74,7 @@ Here are a few example questions you can ask:
 
 Here's how the app looks when answering questions and generating charts:
 
-![Chatbot Screenshot](Screenshot 2025-07-27 123724.png)
+![Chatbot Screenshot](https://github.com/udayjinna/Chatbot-with-excel/blob/main/Screenshot%202025-07-27%20123724.png)
 
 ## 🧠 Tools and Technologies Used
 
