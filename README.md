@@ -70,6 +70,11 @@ Here are a few example questions you can ask:
 - "Show a histogram of polarity values."
 
 ---
+## 🖼️ Screenshot
+
+Here's how the app looks when answering questions and generating charts:
+
+![Chatbot Screenshot](Screenshot 2025-07-27 123724.png)
 
 ## 🧠 Tools and Technologies Used
 
