@@ -6,7 +6,7 @@ model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-8b")
 
 def ask_question(df, question):
     # Use only a limited number of rows if it's too big
-    csv_preview = df.head(50).to_csv(index=False)
+    csv_preview = df.head(200).to_csv(index=False)
 
     prompt = f"""
 You are a helpful data assistant working with a pandas DataFrame. Based on the following CSV data:
@@ -37,3 +37,4 @@ Only provide actual answer from the data, not explanation or steps. If chart is 
             chart_code = line.replace("CHART_CODE:", "").strip()
 
     return answer, chart_type, chart_code
+
