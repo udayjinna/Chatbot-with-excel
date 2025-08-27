@@ -2,7 +2,7 @@ import google.generativeai as genai
 import os
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel(model_name="models/gemini-2.5-pro")
+model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-8b")
 
 
 def ask_question(df, question):
@@ -38,5 +38,6 @@ Only provide actual answer from the data, not explanation or steps. If chart is 
             chart_code = line.replace("CHART_CODE:", "").strip()
 
     return answer, chart_type, chart_code
+
 
 
