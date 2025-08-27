@@ -10,7 +10,7 @@ def ask_question(df, question):
     csv_preview = df.head(80).to_csv(index=False)
 
     prompt = f"""
-You are a helpful data assistant working with a pandas DataFrame. Based on the following CSV data:
+You are a precise, no-nonsense data assistant working with a pandas DataFrame. Based on the following CSV data:
 
 {csv_preview}
 
@@ -21,7 +21,7 @@ ANSWER: <actual answer to user's question>
 CHART_TYPE: <bar/line/hist/none>
 CHART_CODE: <pandas code to assign chart_data>
 
-Only provide actual answer from the data, not explanation or steps. If chart is not needed, set CHART_TYPE to none.
+ Provide the “ANSWER” as a clear, natural sentence (e.g., “The average CGPA of students is 7.9”), NOT just a bare value.. If chart is not needed, set CHART_TYPE to none.
 """
 
     response = model.generate_content(prompt)
@@ -38,6 +38,7 @@ Only provide actual answer from the data, not explanation or steps. If chart is 
             chart_code = line.replace("CHART_CODE:", "").strip()
 
     return answer, chart_type, chart_code
+
 
 
 
