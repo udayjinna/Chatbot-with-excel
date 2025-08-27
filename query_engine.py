@@ -2,7 +2,8 @@ import google.generativeai as genai
 import os
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-8b")
+model = genai.GenerativeModel(model_name="models/gemini-2.5-pro")
+
 
 def ask_question(df, question):
     # Use only a limited number of rows if it's too big
@@ -37,4 +38,5 @@ Only provide actual answer from the data, not explanation or steps. If chart is 
             chart_code = line.replace("CHART_CODE:", "").strip()
 
     return answer, chart_type, chart_code
+
 
