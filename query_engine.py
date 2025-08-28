@@ -18,8 +18,8 @@ Answer this question clearly: "{question}"
 
 Respond strictly in this format:
 ANSWER: <actual answer to user's question>
-CHART_TYPE: <bar/line/hist/none>
-CHART_CODE: <pandas code to assign chart_data>
+#CHART_TYPE: <bar/line/hist/none>
+#CHART: <generate the chart required using the data available , if data is insufficient ingnore the chart>
 
  Provide the “ANSWER” as a clear, natural sentence (e.g., “The average CGPA of students is 7.9”), NOT just a bare value.. If chart is not needed, set CHART_TYPE to none.
 """
@@ -37,7 +37,8 @@ CHART_CODE: <pandas code to assign chart_data>
         elif line.startswith("CHART_CODE:"):
             chart_code = line.replace("CHART_CODE:", "").strip()
 
-    return answer, chart_type, chart_code
+    return answer
+
 
 
 
